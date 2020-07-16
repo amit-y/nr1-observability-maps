@@ -1,4 +1,4 @@
-/* eslint 
+/* eslint
 no-unused-vars: 0
 */
 import React from 'react';
@@ -30,11 +30,28 @@ export default class HoverMetrics extends React.PureComponent {
   }
 
   componentDidMount() {
-    const customMode = new CustomNrqlMode();
-    const editor0 = this.aceEditor0.editor.getSession().setMode(customMode);
-    const editor1 = this.aceEditor1.editor.getSession().setMode(customMode);
-    const editor2 = this.aceEditor2.editor.getSession().setMode(customMode);
+    this.aceEditorSetMode();
   }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { selectedHoverOption } = this.state;
+    if (
+      selectedHoverOption !== prevState.selectedHoverOption &&
+      selectedHoverOption === 'customNrql'
+    )
+      this.aceEditorSetMode();
+  }
+
+  aceEditorSetMode = () => {
+    const customMode = new CustomNrqlMode();
+    try {
+      const editor0 = this.aceEditor0.editor.getSession().setMode(customMode);
+      const editor1 = this.aceEditor1.editor.getSession().setMode(customMode);
+      const editor2 = this.aceEditor2.editor.getSession().setMode(customMode);
+    } catch (e) {
+      console.log('failed to set mode for ace editor', e);
+    }
+  };
 
   saveNrqlMulti = async (
     updateDataContextState,
@@ -157,6 +174,7 @@ export default class HoverMetrics extends React.PureComponent {
             '';
 
           const selectedHoverOption = value('selectedHoverOption');
+          console.log(selectedHoverOption);
 
           return (
             <>
