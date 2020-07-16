@@ -174,7 +174,6 @@ export default class HoverMetrics extends React.PureComponent {
             '';
 
           const selectedHoverOption = value('selectedHoverOption');
-          console.log(selectedHoverOption);
 
           return (
             <>
